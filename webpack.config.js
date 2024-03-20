@@ -4,17 +4,29 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 module.exports = (env) => {
     return {
         mode: env.mode ?? 'development',
-        entry: path.resolve(__dirname, 'src', 'index.js'),
-        output: {
-            path: path.resolve(__dirname, 'build'),
-            filename: '[name][contenthash].js',
-            clean: true
-        },
+        entry: path.resolve(__dirname, 'src', 'index.ts'),
         plugins: [
             new HtmlWebpackPlugin({
                 title: 'Super',
                 template: path.resolve(__dirname, 'public', 'index.html')
             })
-        ]
+        ],
+        module: {
+            rules: [
+                {
+                    test: /\.tsx?$/,
+                    use: 'ts-loader',
+                    exclude: /node_modules/,
+                },
+            ]
+        },
+        resolve: {
+            extensions: ['.tsx', '.ts', '.js'],
+        },
+        output: {
+            path: path.resolve(__dirname, 'build'),
+            filename: '[name][contenthash].js',
+            clean: true
+        },
     }
 }
