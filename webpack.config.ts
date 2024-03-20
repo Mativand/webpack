@@ -2,6 +2,7 @@ import * as path from 'path';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import webpack from "webpack";
 import type { Configuration as DevServerConfiguration } from "webpack-dev-server";
+import MiniCssExtractPlugin from "mini-css-extract-plugin";
 
 type Mode = 'production' | 'development';
 
@@ -13,7 +14,8 @@ interface EnvVariables {
 export default (env: EnvVariables) => {
 
     const isDev: boolean = env.mode === 'development';
-    console.log('isDev:', isDev)
+    const isProd: boolean = env.mode === 'production';
+
     const config: webpack.Configuration = {
         mode: env.mode ?? 'development',
         entry: path.resolve(__dirname, 'src', 'index.tsx'),
@@ -21,13 +23,21 @@ export default (env: EnvVariables) => {
             new HtmlWebpackPlugin({
                 title: 'Super',
                 template: path.resolve(__dirname, 'public', 'index.html')
+            }),
+            isProd && new MiniCssExtractPlugin({
+                filename: 'css/[name].[contenthash:8].css',
+                chunkFilename: 'css/[name].[contenthash:8].css',
             })
         ].filter(Boolean),
         module: {
             rules: [
                 {
                     test: /\.s[ac]ss$/i,
-                    use: ["style-loader", "css-loader", "sass-loader"],
+                    use: [
+                        isDev ? "style-loader" : MiniCssExtractPlugin.loader,
+                        "css-loader",
+                        "sass-loader"
+                    ],
                 },
                 {
                     test: /\.tsx?$/,
