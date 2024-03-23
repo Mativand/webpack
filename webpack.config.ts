@@ -14,7 +14,8 @@ export default (env: EnvVariables) => {
     const paths: BuildPaths = {
         html: path.resolve(__dirname, 'public', 'index.html'),
         entry: path.resolve(__dirname, 'src', 'index.tsx'),
-        output: path.resolve(__dirname, 'dist')
+        output: path.resolve(__dirname, 'dist'),
+        src: path.resolve(__dirname, 'src')
     }
 
     return buildWebpack({

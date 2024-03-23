@@ -2,8 +2,8 @@ import {createRoot} from "react-dom/client";
 import {App} from "./components/App";
 import {createBrowserRouter, RouterProvider} from "react-router-dom";
 import {Suspense} from "react";
-import {About} from "./components/pages/about";
-import {Contacts} from "./components/pages/contacts";
+import {About} from "@/components/pages/about";
+import {Contacts} from "@/components/pages/contacts";
 
 const router = createBrowserRouter([
     {
