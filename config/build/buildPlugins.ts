@@ -1,10 +1,10 @@
 import HtmlWebpackPlugin from "html-webpack-plugin";
 import MiniCssExtractPlugin from "mini-css-extract-plugin";
-import {Configuration} from "webpack";
+import webpack, {Configuration} from "webpack";
 import {BuildOptions} from "./types";
 import {BundleAnalyzerPlugin} from 'webpack-bundle-analyzer';
 
-export function buildPlugins({mode, paths, analyzer}: BuildOptions):Configuration['plugins'] {
+export function buildPlugins({mode, paths, analyzer, platform}: BuildOptions):Configuration['plugins'] {
     const isProd: boolean = mode === 'production';
     const isDev:  boolean = mode === 'development';
 
@@ -12,6 +12,9 @@ export function buildPlugins({mode, paths, analyzer}: BuildOptions):Configuratio
         new HtmlWebpackPlugin({
             title: 'Super',
             template: paths.html
+        }),
+        new webpack.DefinePlugin({
+            __PLATFORM__: JSON.stringify(platform)
         })
     ]
 

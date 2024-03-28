@@ -2,9 +2,8 @@ import {FC, useState} from 'react';
 import {Link, Outlet} from "react-router-dom";
 
 export const App: FC = () => {
-    const [count, setCount] = useState(0)
     return (
-        <div onClick={() => setCount(count + 1)}>
+        <div>
             <nav>
                 <ul>
                     <li>
@@ -15,6 +14,7 @@ export const App: FC = () => {
                     </li>
                 </ul>
             </nav>
+            <div>{__PLATFORM__}</div>
             <div>
                 <Outlet/>
             </div>
