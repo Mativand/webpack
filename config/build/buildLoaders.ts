@@ -54,8 +54,15 @@ export function buildLoaders(options: BuildOptions): ModuleOptions['rules'] {
 
     const tsLoader = {
         test: /\.tsx?$/,
-        use: 'ts-loader',
         exclude: /node_modules/,
+        use: [
+            {
+                loader: 'ts-loader',
+                options: {
+                    transpileOnly: true
+                }
+            }
+        ]
     }
 
     return [assetLoader, svgLoader, scssLoader, tsLoader]
