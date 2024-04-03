@@ -5,6 +5,8 @@ import {BuildOptions} from "./types";
 import {BundleAnalyzerPlugin} from 'webpack-bundle-analyzer';
 import ForkTsCheckerWebpackPlugin from "fork-ts-checker-webpack-plugin";
 import ReactRefreshPlugin from "@pmmmwh/react-refresh-webpack-plugin";
+import CopyPlugin from "copy-webpack-plugin";
+import path from "path";
 
 export function buildPlugins({mode, paths, analyzer, platform}: BuildOptions):Configuration['plugins'] {
     const isProd: boolean = mode === 'production';
@@ -13,7 +15,8 @@ export function buildPlugins({mode, paths, analyzer, platform}: BuildOptions):Co
     const plugins:Configuration['plugins'] = [
         new HtmlWebpackPlugin({
             title: 'Super',
-            template: paths.html
+            template: paths.html,
+            favicon: path.resolve(paths.public, 'favicon.ico')
         }),
         new webpack.DefinePlugin({
             __PLATFORM__: JSON.stringify(platform)
@@ -32,8 +35,12 @@ export function buildPlugins({mode, paths, analyzer, platform}: BuildOptions):Co
             new MiniCssExtractPlugin({
                 filename: 'css/[name].[contenthash:8].css',
                 chunkFilename: 'css/[name].[contenthash:8].css',
-            })
-        )
+            }),
+            new CopyPlugin({
+                patterns: [
+                    { from: path.resolve(paths.public, 'locales'), to: path.resolve(paths.output, 'locales') }
+                ],
+            }),        )
 
         if (analyzer) {
             plugins.push(
