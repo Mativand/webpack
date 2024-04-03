@@ -4,6 +4,7 @@ import webpack, {Configuration} from "webpack";
 import {BuildOptions} from "./types";
 import {BundleAnalyzerPlugin} from 'webpack-bundle-analyzer';
 import ForkTsCheckerWebpackPlugin from "fork-ts-checker-webpack-plugin";
+import ReactRefreshPlugin from "@pmmmwh/react-refresh-webpack-plugin";
 
 export function buildPlugins({mode, paths, analyzer, platform}: BuildOptions):Configuration['plugins'] {
     const isProd: boolean = mode === 'production';
@@ -16,12 +17,14 @@ export function buildPlugins({mode, paths, analyzer, platform}: BuildOptions):Co
         }),
         new webpack.DefinePlugin({
             __PLATFORM__: JSON.stringify(platform)
-        }),
-        new ForkTsCheckerWebpackPlugin()
+        })
     ]
 
     if (isDev) {
-
+        plugins.push(
+            new ForkTsCheckerWebpackPlugin(),
+            new ReactRefreshPlugin()
+        )
     }
 
     if (isProd) {
